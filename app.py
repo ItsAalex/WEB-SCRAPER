@@ -18,37 +18,19 @@ def home():
 def scrape():
     surname = request.form['surname']
     website = request.form['website']
-
-    if website == 'canada':
-        persons = scrape_canada(surname)
+    scraping_functions = {
+        'canada': scrape_canada,
+        'austria': scrape_austria,
+        'italia': scrape_italia,
+        'belgium': scrape_belgium,
+        'danish': scrape_danish,
+        'switz': scrape_switz
+    }
+    if website in scraping_functions:
+        scrape_func = scraping_functions[website]
+        persons = scrape_func(surname)
         excel_file = generate_excel(persons)
         return f'<a href="/download/{excel_file}" download>Download Excel</a>'
-
-    elif website == 'austria':
-        persons = scrape_austria(surname)
-        excel_file = generate_excel(persons)
-        return f'<a href="/download/{excel_file}" download>Download Excel</a>'
-    
-    elif website == 'italia':
-        scrape_italia(surname)
-        excel_file = generate_excel(persons)
-        return f'<a href="/download/{excel_file}" download>Download Excel</a>'
-
-    elif website =='belgium':
-        scrape_belgium(surname)
-        excel_file = generate_excel(persons)
-        return f'<a href="/download/{excel_file}" download>Download Excel</a>'
-    
-    elif website == 'danish':
-        persons = scrape_danish(surname)
-        excel_file = generate_excel(persons)
-        return f'<a href="/download/{excel_file}" download>Download Excel</a>'
-    
-    elif website == 'switz':
-        persons = scrape_switz(surname)
-        excel_file = generate_excel(persons)
-        return f'<a href="/download/{excel_file}" download>Download Excel</a>'
-
     return "Website not supported"
 
 def generate_excel(data):

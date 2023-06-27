@@ -10,8 +10,8 @@ import pandas as pd
 import re
 
 def scrape_switz(surname):
-    surname = input("Enter your name")
-    #surname = surname = request.form['surname'].lower().strip()
+    #surname = input("Enter your name")
+    surname = surname = request.form['surname'].lower().strip()
     browser = webdriver.Chrome()
     browser.get(f'https://tel.search.ch/?was={surname}&privat=1&pages=1')
 
@@ -29,11 +29,6 @@ def scrape_switz(surname):
 
         # Get the final URL
         final_url = browser.current_url
-
-        # Close the browser
-        browser.quit()
-
-
 
         base_url = "https://www.search.ch/"
         # Fetch the HTML content
@@ -66,5 +61,7 @@ def scrape_switz(surname):
             person = [name, address, telephone]
             # Append the person list to the persons list
             persons.append(person)
+
+    browser.quit()
     
     return persons
