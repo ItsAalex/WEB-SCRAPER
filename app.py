@@ -1,9 +1,11 @@
 from flask import render_template, send_file, Flask, request
 import pandas as pd
-#from bs4 import BeautifulSoup
 from canada import scrape_canada
 from austria import  scrape_austria
 from italia import scrape_italia
+from france import scrape_france
+from norway import scrape_norway
+from sweden import scrape_sweden
 from belgium import scrape_belgium
 from danish import scrape_danish
 from switz import scrape_switz
@@ -24,7 +26,10 @@ def scrape():
         'italia': scrape_italia,
         'belgium': scrape_belgium,
         'danish': scrape_danish,
-        'switz': scrape_switz
+        'switz': scrape_switz,
+        'france': scrape_france,
+        'sweden': scrape_sweden,
+        'norway': scrape_norway,
     }
     if website in scraping_functions:
         scrape_func = scraping_functions[website]
