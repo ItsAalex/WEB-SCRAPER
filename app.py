@@ -9,6 +9,7 @@ from sweden import scrape_sweden
 from belgium import scrape_belgium
 from danish import scrape_danish
 from switz import scrape_switz
+from germany import scrape_germany
 
 app = Flask(__name__)
 
@@ -30,6 +31,7 @@ def scrape():
         'france': scrape_france,
         'sweden': scrape_sweden,
         'norway': scrape_norway,
+        'germany': scrape_germany
     }
     if website in scraping_functions:
         scrape_func = scraping_functions[website]
