@@ -4,6 +4,7 @@ import json
 from flask import request
 
 def scrape_sweden(surname):
+    i = 0
     base_url = "https://www.eniro.se/"
     page = 1
     persons = []
@@ -47,5 +48,7 @@ def scrape_sweden(surname):
         if not persons_data:
             break
 
-    # Print the persons list
+    for person in persons:
+        print(i,person) 
+        i+=1
     return persons

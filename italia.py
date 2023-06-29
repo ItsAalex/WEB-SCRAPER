@@ -3,6 +3,7 @@ import requests
 from flask import request
 
 def scrape_italia(surname):
+    i = 1
     base_url = "https://www.paginebianche.it/"
     page = 1
     persons = []
@@ -40,4 +41,7 @@ def scrape_italia(surname):
         if not listings:
             break
         
+    for person in persons:
+        print(i,person) 
+        i+=1
     return persons

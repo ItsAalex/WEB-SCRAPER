@@ -4,6 +4,7 @@ import pandas as pd
 from flask import request
 
 def scrape_germany(surname):
+    i = 0
     surname = surname = request.form['surname'].lower().strip()
     url = f"https://www.dastelefonbuch.de/Suche/{surname}?s=eyJvcmRlcmJ5IjoibmFtZSIsImF0IjoiMSJ9"
     response = requests.get(url)
@@ -11,6 +12,7 @@ def scrape_germany(surname):
 
     persons = []
     while True:
+        address_text = ""
         results = html_content.find_all("div", class_="entry hitlistitem")
         
         if not results:
@@ -44,4 +46,7 @@ def scrape_germany(surname):
         else:
             break
         
-        return persons
+    for person in persons:
+        print(i,person) 
+        i+=1
+    return persons
