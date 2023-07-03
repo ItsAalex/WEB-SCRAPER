@@ -47,5 +47,4 @@ def scrape_sweden(surname):
         if not persons_data:
             break
 
-    # Print the persons list
     return persons

@@ -49,6 +49,4 @@ def scrape_austria(surname):
         # If no listings found, exit the loop
         if not listings:
             break
-        for person in persons:
-            print(person)
     return persons
