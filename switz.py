@@ -1,12 +1,10 @@
 from flask import request
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 import requests
 from bs4 import BeautifulSoup
-import pandas as pd
 import re
 
 def scrape_switz(surname):

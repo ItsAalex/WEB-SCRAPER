@@ -1,6 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-import pandas as pd
 from flask import request
 
 def scrape_germany(surname):

@@ -1,5 +1,6 @@
-from flask import render_template, send_file, Flask, request
+from flask import render_template,Flask, request
 import pandas as pd
+import os
 from canada import scrape_canada
 from austria import  scrape_austria
 from italia import scrape_italia
@@ -36,22 +37,22 @@ def scrape():
     if website in scraping_functions:
         scrape_func = scraping_functions[website]
         persons = scrape_func(surname)
-        excel_file = generate_excel(persons)
-        return f'<a href="/download/{excel_file}" download>Download Excel</a>'
+        excel_file = generate_excel(persons,surname,website)
+        return render_template('empty.html')
     return "Website not supported"
 
-def generate_excel(data):
+def generate_excel(data, surname, website):
+    output_folder = '~/Downloads'  # Replace with your desired folder path
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+
+    excel_file = f'{surname}_{website}.xlsx'
+    excel_path = os.path.join(output_folder, excel_file)
     df = pd.DataFrame(data, columns=['Name', 'Address', 'Telephone'])
-    excel_file = 'scraped_data.xlsx'
-    df.to_excel(excel_file, index=False)
-    print(f"Excel file generated at path: {excel_file}")
+    df.to_excel(excel_path, index=False)
+
+    print(f"Excel file generated at path: {excel_path}")
     return excel_file
 
-
-@app.route('/download/<filename>', methods=['GET'])
-def download(filename):
-    return send_file(filename, as_attachment=True)
-
-
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=int("3000"), debug=True)
