@@ -8,3 +8,13 @@
 6. Install Selenium : pip install selenium
 7. Install openpyxl : pip3 install openpyxl
 8. Download webdriver and set the path for it : https://chromedriver.storage.googleapis.com/index.html?path=114.0.5735.90/
+
+
+FROM python:3.8
+
+WORKDIR /app
+ADD . /app
+
+RUN pip install requests beautifulsoup4 flask pandas selenium openpyxl
+
+CMD ["python3", "app.py"]
