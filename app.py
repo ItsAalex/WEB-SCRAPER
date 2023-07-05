@@ -1,8 +1,8 @@
-from flask import render_template,Flask, request
+from flask import render_template, Flask, request, send_from_directory
 import pandas as pd
 import os
 from canada import scrape_canada
-from austria import  scrape_austria
+from austria import scrape_austria
 from italia import scrape_italia
 from france import scrape_france
 from norway import scrape_norway
@@ -14,9 +14,16 @@ from germany import scrape_germany
 
 app = Flask(__name__)
 
+# Define the directory for saving files
+#UPLOAD_FOLDER = os.path.join(app.root_path, '/app/downloads')
+UPLOAD_FOLDER = '/app/downloads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+
 @app.route('/', methods=['GET'])
 def home():
     return render_template('search.html')
+
 
 @app.route('/scrape', methods=['POST'])
 def scrape():
@@ -37,22 +44,23 @@ def scrape():
     if website in scraping_functions:
         scrape_func = scraping_functions[website]
         persons = scrape_func(surname)
-        excel_file = generate_excel(persons,surname,website)
-        return render_template('empty.html')
+        excel_file = generate_excel(persons, surname, website)
+        return send_from_directory(app.config['UPLOAD_FOLDER'], excel_file, as_attachment=True)
     return "Website not supported"
 
+
 def generate_excel(data, surname, website):
-    output_folder = '~/Downloads'  # Replace with your desired folder path
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
+    if not os.path.exists(app.config['UPLOAD_FOLDER']):
+        os.makedirs(app.config['UPLOAD_FOLDER'])
 
     excel_file = f'{surname}_{website}.xlsx'
-    excel_path = os.path.join(output_folder, excel_file)
+    excel_path = os.path.join(app.config['UPLOAD_FOLDER'], excel_file.lstrip('/'))
     df = pd.DataFrame(data, columns=['Name', 'Address', 'Telephone'])
     df.to_excel(excel_path, index=False)
 
     print(f"Excel file generated at path: {excel_path}")
     return excel_file
 
+
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=int("3000"), debug=True)
+    app.run(host="0.0.0.0", port=3000, debug=True)
