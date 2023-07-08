@@ -1,16 +1,24 @@
 from flask import request
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 import time
 import requests
 from bs4 import BeautifulSoup
 import re
 
 def scrape_switz(surname):
-    #surname = input("Enter your name")
-    surname = surname = request.form['surname'].lower().strip()
-    browser = webdriver.Chrome()
+    surname = request.form['surname'].lower().strip()
+
+    chrome_options = Options()
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+
+    service = Service("/usr/local/bin/chromedriver")
+    driver = webdriver.Chrome(service=service, options=chrome_options)
+
+    browser = driver
     browser.get(f'https://tel.search.ch/?was={surname}&privat=1&pages=1')
 
     items = []
